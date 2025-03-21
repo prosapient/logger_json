@@ -99,9 +99,11 @@ defmodule LoggerJSON.Formatters.Datadog do
 
   @doc false
   def format_crash_reason(binary, {%{} = _exception, stacktrace}, _meta) do
+    message = IO.chardata_to_string(binary)
     %{
+      message: message,
       error: %{
-        message: IO.chardata_to_string(binary),
+        message: message,
         stack: Exception.format_stacktrace(stacktrace)
       }
     }
@@ -109,9 +111,11 @@ defmodule LoggerJSON.Formatters.Datadog do
 
   # https://docs.datadoghq.com/standard-attributes/?search=logger+error&product=log+management
   def format_crash_reason(binary, _other, _meta) do
+    message = IO.chardata_to_string(binary)
     %{
+      message: message,
       error: %{
-        message: IO.chardata_to_string(binary)
+        message: message
       }
     }
   end
